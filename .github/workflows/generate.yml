@@ -1,4 +1,4 @@
-hname: Generate SourceCred
+name: Generate SourceCred
 on: [pull_request]
 
 jobs:
