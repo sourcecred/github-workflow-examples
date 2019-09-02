@@ -11,6 +11,7 @@ jobs:
       env:
         SOURCECRED_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        RANDOM_VAR=that docker run -i -e RANDOM_VAR busybox env | grep RANDOM
         docker run -i -v sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred load ${GITHUB_REPOSITORY}
         #SOURCECRED_GITHUB_TOKEN=${GITHUB_TOKEN} docker run -i -v sourcecred_data:/data sourcecred/sourcecred scores ${GITHUB_REPOSITORY} > scores.json
         #SOURCECRED_GITHUB_TOKEN=${GITHUB_TOKEN} docker run -i -e SOURCECRED_GITHUB_TOKEN sourcecred/widgets < scores.json > contributors.svg
