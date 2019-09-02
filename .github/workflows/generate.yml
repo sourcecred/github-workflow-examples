@@ -8,7 +8,7 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v1
     - name: Build the Docker image
-      env:
+      with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         SOURCECRED_GITHUB_TOKEN=${GITHUB_TOKEN} docker run -i -v sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred load ${GITHUB_REPOSITORY}
