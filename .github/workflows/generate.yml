@@ -1,11 +1,9 @@
-name: Generate SourceCred
+name: Generate-SourceCred
 
-on: [pull_request]
-
-#  schedule:
-    # Run on the first of every month
-#    - cron: 0 0 1 * *
-
+on:
+  schedule:
+    # Daily at 8am
+    - cron: 0 8 * * *
 
 jobs:
   GenerateSourcecred:
