@@ -1,9 +1,9 @@
 name: Generate-SourceCred
 
-on:
-  schedule:
-    # Daily at 8am
-    - cron: 0 8 * * *
+on: [pull_request]
+#  schedule:
+#    # Daily at 8am
+#    - cron: 0 8 * * *
 
 jobs:
   GenerateSourcecred:
@@ -18,6 +18,7 @@ jobs:
         SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -v sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred:ignore-token-regex load ${GITHUB_REPOSITORY}
         SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -v sourcecred_data:/data sourcecred/sourcecred:ignore-token-regex scores ${GITHUB_REPOSITORY} > scores.json
         SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -e SOURCECRED_GITHUB_TOKEN sourcecred/widgets < scores.json > contributors.svg
+        cat contributors.svg
     - name: Checkout New Branch
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -40,6 +41,5 @@ jobs:
         BRANCH_AGAINST: "master"
       run: |
           export BRANCH_FROM="update/sourcecred-$(date '+%Y-%m-%d')"
-          wget https://gist.githubusercontent.com/vsoch/074f4895e52f7fa0574a3a7a51d5c9d8/raw/ddfedf86abd2b78332b955325d5d93f37d1353b4/pull_request.sh
-          chmod +x pull_request.sh
-          /bin/bash pull_request.sh
+          chmod +x .github/workflows/pull_request.sh
+          /bin/bash .github/workflows/pull_request.sh
