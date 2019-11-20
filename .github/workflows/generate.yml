@@ -41,7 +41,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH_AGAINST: "master"
       run: |
-          export BRANCH_FROM="update/sourecred-$(date '+%Y-%m-%d')"
+          export BRANCH_FROM="update/sourcecred-$(date '+%Y-%m-%d')"
           wget https://gist.githubusercontent.com/vsoch/074f4895e52f7fa0574a3a7a51d5c9d8/raw/b2cd254683cd9cd447d5323d155266fc22b53de6/pull_request.sh
           chmod +x pull_request.sh
           /bin/bash pull_request.sh
