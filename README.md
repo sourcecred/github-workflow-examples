@@ -6,7 +6,7 @@ This is a GitHub action to generate a beautiful [sourcecred](https://www.github.
 svg, using the sourcecred [widgets](https://www.github.com/sourcecred/widgets) containers. The git history for this repository is fairly limited, but
 with more contributors the graphic below would be much more substantial!
 
-![contributors.svg](contributors.svg)
+![contributors.svg](./contributors.svg)
 
 ## Usage
 
@@ -29,7 +29,7 @@ Likely after the first graphic generation, you will want to add a link for it
 to render in your README.md, as is done here.
 
 ```
-![contributors.svg](contributors.svg)
+![contributors.svg](./contributors.svg)
 ```
 
 You can also use the example badge to add a badge for your GitHub action.
