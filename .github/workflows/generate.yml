@@ -1,9 +1,9 @@
 name: Generate-SourceCred
 
-on: [pull_request]
-#  schedule:
-#    # Daily at 8am
-#    - cron: 0 8 * * *
+on:
+  schedule:
+    # Daily at 8am
+    - cron: 0 8 * * *
 
 jobs:
   GenerateSourcecred:
