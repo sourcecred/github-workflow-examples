@@ -15,8 +15,8 @@ jobs:
       env:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -v sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred:ignore-token-regex load ${GITHUB_REPOSITORY}
-        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -v sourcecred_data:/data sourcecred/sourcecred:ignore-token-regex scores ${GITHUB_REPOSITORY} > scores.json
+        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -v sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred:dev load ${GITHUB_REPOSITORY}
+        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -v sourcecred_data:/data sourcecred/sourcecred:dev scores ${GITHUB_REPOSITORY} > scores.json
         SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -e SOURCECRED_GITHUB_TOKEN sourcecred/widgets < scores.json > contributors.svg
         cat contributors.svg
     - name: Checkout New Branch
