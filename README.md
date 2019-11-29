@@ -6,7 +6,7 @@ This is a GitHub action to generate a beautiful [sourcecred](https://www.github.
 contributors graphic, using the sourcecred [widgets](https://www.github.com/sourcecred/widgets) containers. The git history for this repository is fairly limited, but
 with more contributors the graphic below would be much more substantial!
 
-![contributors.png](./contributors.png)
+![contributors.svg](./contributors.svg)
 
 ## Usage
 
