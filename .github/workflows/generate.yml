@@ -2,8 +2,8 @@ name: Generate-SourceCred
 
 on:
   schedule:
-    # Daily at 8am
-    - cron: 0 8 * * *
+    # Weekly on Sunday
+    - cron: 0 0 * * 0
 
 jobs:
   GenerateSourcecred:
