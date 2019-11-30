@@ -1,4 +1,4 @@
-name: Generate-SourceCred
+name: generate-with-pull-request
 
 on:
   schedule:
