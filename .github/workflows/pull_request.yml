@@ -1,4 +1,4 @@
-name: generate-with-pull-request
+name: pull-request-sourcecred
 
 on:
   schedule:

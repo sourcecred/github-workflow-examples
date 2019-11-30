@@ -1,6 +1,6 @@
 # Sourcecred Action
 
-[![GitHub actions status](https://github.com/sourcecred/sourcecred-action/workflows/generate-with-pull-request/badge.svg?branch=master)](https://github.com/sourcecred/sourcecred-action/actions?query=branch%3Amaster+workflow%3Agenerate-with-pull-request)
+[![GitHub actions status](https://github.com/sourcecred/sourcecred-action/workflows/pull-request-sourcecred/badge.svg?branch=master)](https://github.com/sourcecred/sourcecred-action/actions?query=branch%3Amaster+workflow%3Apull-request-sourcecred)
 
 This is a GitHub action to generate a beautiful [sourcecred](https://www.github.com/sourcecred/sourcecred)
 contributors graphic, using the sourcecred [widgets](https://www.github.com/sourcecred/widgets) containers. The git history for this repository is fairly limited, but with more contributors the graphic below would be much more substantial!
