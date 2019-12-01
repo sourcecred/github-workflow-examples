@@ -97,7 +97,7 @@ main () {
 }
 
 echo "==========================================================================
-START: Creating Membership Count Update Pull Request!";
+START: Creating Contributor Graphic Update Pull Request!";
 main;
 echo "==========================================================================
 END: Finished";
