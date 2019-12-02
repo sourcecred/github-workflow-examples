@@ -34,6 +34,7 @@ jobs:
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@users.noreply.github.com"
 
+        git pull ${UPDATE_BRANCH}
         git add contributors.svg
         git commit -m "Automated deployment to update contributors.svg $(date '+%Y-%m-%d')" --allow-empty
         git push origin ${UPDATE_BRANCH}
