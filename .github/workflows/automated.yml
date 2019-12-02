@@ -11,6 +11,12 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v1
+    - name: Cache Data
+      id: cache-data
+      uses: actions/cache@v1
+      with:
+        path: sourcecred_data
+        key: ${{ runner.os }}-sourcecred_data
     - name: Build the Docker image
       env:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
