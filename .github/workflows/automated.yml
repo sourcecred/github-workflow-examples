@@ -37,7 +37,7 @@ jobs:
         git checkout -b ${UPDATE_BRANCH}
         git branch
 
-        git pull ${UPDATE_BRANCH}
+        git pull origin ${UPDATE_BRANCH}
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@users.noreply.github.com"
 
