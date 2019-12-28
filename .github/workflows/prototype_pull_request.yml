@@ -1,0 +1,56 @@
+name: prototype-pull-request
+
+on:
+  pull_request: []
+  schedule:
+    # Weekly on Sunday
+    - cron: 0 0 * * 0
+
+jobs:
+  GenerateSourcecred:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v1
+    - name: Cache Data
+      id: cache-data
+      uses: actions/cache@v1
+      with:
+        path: sourcecred_data
+        key: ${{ runner.os }}-sourcecred_data
+    - name: Generate SourceCred Prototype
+      env:
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        mkdir -p sourcecred_data docs/api/v1;
+        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i --rm -v $PWD/sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred:dev load ${GITHUB_REPOSITORY}
+        cp -r sourcecred_data docs/api/v1/data
+        rm -rf docs/api/v1/data/cache
+        docker run -i --rm -v $PWD/sourcecred_data:/data -v $PWD/docs:/output sourcecred/sourcecred:dev build --output-path /output
+        echo "Content of docs:"
+        ls docs/
+
+    - name: Open Pull Request
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH_AGAINST: "master"
+      run: |
+        echo "GitHub Actor: ${GITHUB_ACTOR}"
+        git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        git branch
+
+        export BRANCH_FROM="update/sourcecred-prototype-$(date '+%Y-%m-%d')"
+        git checkout -b "${BRANCH_FROM}"
+        git branch
+
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@users.noreply.github.com"
+
+        git add docs/*
+        git commit -m "Automated deployment to update docs/ static files $(date '+%Y-%m-%d')"
+        git push origin "${BRANCH_FROM}"
+
+        # Absolutely must download specific sha of script
+        wget https://raw.githubusercontent.com/sourcecred/sourcecred-action/acb7c9e9fe5db6cd5f9bce81b79f9206af95ad56/.github/workflows/pull_request.sh
+        chmod +x pull_request.sh
+        /bin/bash pull_request.sh

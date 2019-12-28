@@ -1,4 +1,4 @@
-name: automated-sourcecred
+name: contributors-automated
 
 on:
   schedule:
@@ -17,18 +17,18 @@ jobs:
       with:
         path: sourcecred_data
         key: ${{ runner.os }}-sourcecred_data
-    - name: Build the Docker image
+    - name: Generate SourceCred Graphic
       env:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -v sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred:dev load ${GITHUB_REPOSITORY}
-        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -v sourcecred_data:/data sourcecred/sourcecred:dev scores ${GITHUB_REPOSITORY} > scores.json
-        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -e SOURCECRED_GITHUB_TOKEN sourcecred/widgets < scores.json > contributors.svg
+        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i --rm -v sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred:dev load ${GITHUB_REPOSITORY}
+        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i --rm -v sourcecred_data:/data sourcecred/sourcecred:dev scores ${GITHUB_REPOSITORY} > scores.json
+        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i --rm -e SOURCECRED_GITHUB_TOKEN sourcecred/widgets < scores.json > contributors.svg
         cat contributors.svg
-    - name: Checkout New Branch
+    - name: Update Branch
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        UPDATE_BRANCH: gh-pages
+        UPDATE_BRANCH: contributors-automated
       run: |
         echo "GitHub Actor: ${GITHUB_ACTOR}"
         git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
@@ -42,5 +42,5 @@ jobs:
 
         git pull origin ${UPDATE_BRANCH}
         git add contributors.svg
-        git commit -m "Automated deployment to update contributors.svg $(date '+%Y-%m-%d')" --allow-empty
+        git commit -m "Automated deployment to update contributors.svg $(date '+%Y-%m-%d')"
         git push origin ${UPDATE_BRANCH}
