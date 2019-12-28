@@ -1,0 +1,46 @@
+name: contributors-automated
+
+on:
+  schedule:
+    # Nightly at 2:30am 
+    - cron: 30 2 * * *
+
+jobs:
+  GenerateSourcecred:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v1
+    - name: Cache Data
+      id: cache-data
+      uses: actions/cache@v1
+      with:
+        path: sourcecred_data
+        key: ${{ runner.os }}-sourcecred_data
+    - name: Generate SourceCred Graphic
+      env:
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i --rm -v sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred:dev load ${GITHUB_REPOSITORY}
+        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i --rm -v sourcecred_data:/data sourcecred/sourcecred:dev scores ${GITHUB_REPOSITORY} > scores.json
+        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i --rm -e SOURCECRED_GITHUB_TOKEN sourcecred/widgets < scores.json > contributors.svg
+        cat contributors.svg
+    - name: Update Branch
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        UPDATE_BRANCH: contributors-automated
+      run: |
+        echo "GitHub Actor: ${GITHUB_ACTOR}"
+        git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        git branch
+        echo "Branch to push to is ${UPDATE_BRANCH}"
+        git checkout -b ${UPDATE_BRANCH}
+        git branch
+
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@users.noreply.github.com"
+
+        git pull origin ${UPDATE_BRANCH}
+        git add contributors.svg
+        git commit -m "Automated deployment to update contributors.svg $(date '+%Y-%m-%d')"
+        git push origin ${UPDATE_BRANCH}

@@ -1,4 +1,4 @@
-name: automated-sourcecred
+name: prototype-automated
 
 on:
   schedule:
@@ -17,18 +17,21 @@ jobs:
       with:
         path: sourcecred_data
         key: ${{ runner.os }}-sourcecred_data
-    - name: Build the Docker image
+    - name: Generate SourceCred Prototype
       env:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -v sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred:dev load ${GITHUB_REPOSITORY}
-        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -v sourcecred_data:/data sourcecred/sourcecred:dev scores ${GITHUB_REPOSITORY} > scores.json
-        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -e SOURCECRED_GITHUB_TOKEN sourcecred/widgets < scores.json > contributors.svg
-        cat contributors.svg
-    - name: Checkout New Branch
+        mkdir -p sourcecred_data docs/api/v1;
+        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i --rm -v $PWD/sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred:dev load ${GITHUB_REPOSITORY}
+        docker run -i --rm -v $PWD/sourcecred_data:/data -v $PWD/docs:/output sourcecred/sourcecred:dev build --output-path /output
+        cp -r sourcecred_data docs/api/v1/data
+        rm -rf docs/api/v1/data/cache
+        echo "Content of docs:"
+        ls docs/
+    - name: Update Master Branch
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        UPDATE_BRANCH: gh-pages
+        UPDATE_BRANCH: master
       run: |
         echo "GitHub Actor: ${GITHUB_ACTOR}"
         git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
@@ -41,6 +44,6 @@ jobs:
         git config --global user.email "github-actions@users.noreply.github.com"
 
         git pull origin ${UPDATE_BRANCH}
-        git add contributors.svg
-        git commit -m "Automated deployment to update contributors.svg $(date '+%Y-%m-%d')" --allow-empty
+        git add docs/*
+        git commit -m "Automated deployment to update prototype in docs $(date '+%Y-%m-%d')"
         git push origin ${UPDATE_BRANCH}
