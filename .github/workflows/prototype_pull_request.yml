@@ -22,10 +22,10 @@ jobs:
       env:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        mkdir -p sourcecred_data docs
+        mkdir -p sourcecred_data docs;
         SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i --rm -v $PWD/sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred:dev load ${GITHUB_REPOSITORY}
-        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i -d --rm -v $PWD/sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN -v $PWD/docs:/output sourcecred/sourcecred:dev build --output-path /output
-        echo "Content of docs"
+        docker run -i --rm -v $PWD/sourcecred_data:/data -v $PWD/docs:/output sourcecred/sourcecred:dev build --output-path /output
+        echo "Content of docs:"
         ls docs/
     - name: Open Pull Request
       env:
