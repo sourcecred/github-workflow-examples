@@ -43,11 +43,8 @@ jobs:
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@users.noreply.github.com"
 
-        echo "Present working directory is $PWD"
-        ls
-        ls docs/
         git add docs/*
-        git commit -m "Automated deployment to update docs/ static files $(date '+%Y-%m-%d')" || echo "No changes" && exit 0
+        git commit -m "Automated deployment to update docs/ static files $(date '+%Y-%m-%d')"
         git push origin "${BRANCH_FROM}"
 
         # Absolutely must download specific sha of script
