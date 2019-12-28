@@ -1,10 +1,9 @@
-name: prototype-pull-request
+name: prototype-automated
 
 on:
-  pull_request: []
   schedule:
-    # Weekly on Sunday
-    - cron: 0 0 * * 0
+    # Nightly at 2:30am 
+    - cron: 30 2 * * *
 
 jobs:
   GenerateSourcecred:
@@ -29,26 +28,22 @@ jobs:
         docker run -i --rm -v $PWD/sourcecred_data:/data -v $PWD/docs:/output sourcecred/sourcecred:dev build --output-path /output
         echo "Content of docs:"
         ls docs/
-    - name: Open Pull Request
+    - name: Update Master Branch
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH_AGAINST: "master"
+        UPDATE_BRANCH: master
       run: |
         echo "GitHub Actor: ${GITHUB_ACTOR}"
         git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         git branch
-
-        export BRANCH_FROM="update/sourcecred-prototype-$(date '+%Y-%m-%d')"
-        git checkout -b "${BRANCH_FROM}"
+        echo "Branch to push to is ${UPDATE_BRANCH}"
+        git checkout -b ${UPDATE_BRANCH}
         git branch
 
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@users.noreply.github.com"
 
+        git pull origin ${UPDATE_BRANCH}
         git add docs/*
-        git commit -m "Automated deployment to update docs/ static files $(date '+%Y-%m-%d')"
-        git push origin "${BRANCH_FROM}"
-        # Absolutely must download specific sha of script
-        wget https://raw.githubusercontent.com/sourcecred/sourcecred-action/acb7c9e9fe5db6cd5f9bce81b79f9206af95ad56/.github/workflows/pull_request.sh
-        chmod +x pull_request.sh
-        TITLE="Updating SourceCred Prototype" /bin/bash -e pull_request.sh
+        git commit -m "Automated deployment to update prototype in docs $(date '+%Y-%m-%d')"
+        git push origin ${UPDATE_BRANCH}
