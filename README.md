@@ -22,14 +22,14 @@ determined by a SourceCred contribution graph. The git history for this reposito
 
 There are currently two derivations of the same workflow:
 
- - [.github/workflows/contributors_pull_request.yml](.github/workflows/pull_request.yml) can be added to your repository to run a scheduled job to open a pull request to update the graphic. This strategy allows you to review the changes by opening a new branch with the updated graphic, and is ideal if you don't want your repository being updated automatically. If you use this method, you'll also need to add the [.github/workflows/contributors_pull_request.sh](.github/workflows/pull_request.sh) file in the same folder.
- - [.github/workflows/contributors_automated.yml](.github/workflows/automated.yml) runs the same logic, but pushes directly to a branch of your choosing (gh-pages for the repository here, and you can change this with the `UPDATE_BRANCH` variable.
+ - [.github/workflows/contributors_pull_request.yml](.github/workflows/contributors_pull_request.yml) can be added to your repository to run a scheduled job to open a pull request to update the graphic. This strategy allows you to review the changes by opening a new branch with the updated graphic, and is ideal if you don't want your repository being updated automatically. If you use this method, you'll also need to add the [.github/workflows/pull_request.sh](.github/workflows/pull_request.sh) file in the same folder.
+ - [.github/workflows/contributors_automated.yml](.github/workflows/contributors_automated.yml) runs the same logic, but pushes directly to a branch of your choosing (you can change this with the `UPDATE_BRANCH` variable.
 
 ### 2. Customize
 
 #### contributors_pull_request.yml and contributors_automated.yml
 
- - **time**: you might want to adjust the cron frequency to be run at a rate that works for you . The pull request example is set to run on a weekly basis, and the automated example runs nightly at 2:30am, pushing to github pages.
+ - **time**: you might want to adjust the cron frequency to be run at a rate that works for you . The pull request example is set to run on a weekly basis, and the automated example runs nightly at 2:30am.
  - **filename**: the graphic is saved as contributors.svg at the root of the repository, and you can change this if desired.
 
 #### contributors_pull_request.yml
@@ -37,7 +37,7 @@ There are currently two derivations of the same workflow:
 You might want to customize the workflow in the following ways:
 
  - **script for PR**: The script to open the pull request is kept alongside the workflows, and referenced by sha. If you are a developer and need to update the pull_request.sh script, make sure to update the sha as well.
- - **branches**: currently the pull request is done via a created branch called update/sourcecred-<date> and then done against master. You can update the Action to adjust these values.
+ - **branches**: currently the pull request is done via a created branch called update/sourcecred-contributors-<date> and then done against master. You can update the Action to adjust these values.
  - **auto-delete**: If you choose to open new branches, you might want to consider enabling "Auto delete head branches" in your repository settings. This will delete branches after merge.
 
 #### contributors_automated.yml
@@ -61,3 +61,29 @@ Happy hacking!
 A more substantial tool is the [sourcecred prototype](https://sourcecred.io/cred/timeline/@sourcecred/),
 which includes an interactive graph for your repository.
 
+
+### 1. Choose your workflow
+
+There are also two derivations of this same workflow:
+
+ - [.github/workflows/prototype_pull_request.yml](.github/workflows/prototype_pull_request.yml) can be added to your repository to run a scheduled job to open a pull request to generate static prototype files in the [docs](docs) folder. The idea would then be to deploy the docs folder on master branch to GitHub Pages. If you use this method, you'll also need to add the [.github/workflows/pull_request.sh](.github/workflows/pull_request.sh) file in the same folder.
+ - [.github/workflows/prototype_automated.yml](.github/workflows/prototype_automated.yml) is the same thing, but done in an automated fashion.
+
+### 2. Customize
+
+#### prototype_pull_request.yml and prototype_automated.yml
+
+ - **time**: you might want to adjust the cron frequency to be run at a rate that works for you . The pull request example is set to run on a weekly basis, and the automated example runs nightly at 2:30am.
+ - **output**: Output is default directed to a docs folder, and the idea is that you would deploy this on GitHub pages. You could also change the logic to have static files in the root of the repository, if desired.
+
+#### prototype_pull_request.yml
+
+You might want to customize the workflow in the following ways:
+
+ - **script for PR**: The script to open the pull request is kept alongside the workflows, and referenced by sha. If you are a developer and need to update the pull_request.sh script, make sure to update the sha as well.
+ - **branches**: currently the pull request is done via a created branch called update/sourcecred-prototype-<date> and then done against master. You can update the Action to adjust these values.
+ - **auto-delete**: If you choose to open new branches, you might want to consider enabling "Auto delete head branches" in your repository settings. This will delete branches after merge.
+
+#### prototype_automated.yml
+
+ - **branch** You can customize the branch that is pushed to by changing `UPDATE_BRANCH`. Currently we push to "master" but you might imagine wanting to push the entire static content to gh-pages (or somewhere else).
