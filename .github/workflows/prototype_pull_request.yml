@@ -46,7 +46,7 @@ jobs:
         echo "Present working directory is $PWD"
         ls
         ls docs/
-        git add docs/
+        git add docs/*
         git commit -m "Automated deployment to update docs/ static files $(date '+%Y-%m-%d')" || echo "No changes" && exit 0
         git push origin "${BRANCH_FROM}"
 
