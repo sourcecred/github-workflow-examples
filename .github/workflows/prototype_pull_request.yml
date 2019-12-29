@@ -1,7 +1,6 @@
 name: prototype-pull-request
 
 on:
-  pull_request: []
   schedule:
     # Weekly on Sunday
     - cron: 0 0 * * 0
