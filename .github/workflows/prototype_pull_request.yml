@@ -22,10 +22,10 @@ jobs:
       env:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        mkdir -p sourcecred_data ${PWD}/docs/api/v1;
+        mkdir -p sourcecred_data ${PWD}/docs/api/v1/;
         SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i --rm -v $PWD/sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred:dev load ${GITHUB_REPOSITORY}
         docker run -i --rm -v $PWD/sourcecred_data:/data -v $PWD/docs:/output sourcecred/sourcecred:dev build --output-path /output
-        cp -r sourcecred_data/ ${PWD}/docs/api/v1/data/
+        cp -r sourcecred_data/ ${PWD}/docs/api/v1/data
         rm -rf ${PWD}/docs/api/v1/data/cache
         echo "Content of docs:"
         ls docs/

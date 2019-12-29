@@ -42,5 +42,5 @@ jobs:
 
         git pull origin ${UPDATE_BRANCH}
         git add contributors.svg
-        git commit -m "Automated deployment to update contributors.svg $(date '+%Y-%m-%d')" || echo "No changes"
-        git push origin ${UPDATE_BRANCH} || echo "No push"
+        git commit -m "Automated deployment to update contributors.svg $(date '+%Y-%m-%d')" || exit 0
+        git push origin ${UPDATE_BRANCH}
