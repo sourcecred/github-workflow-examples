@@ -12,23 +12,28 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v1
-    - name: Cache Data
+    - name: Cache SourceCred Data
       id: cache-data
       uses: actions/cache@v1
       with:
         path: sourcecred_data
         key: ${{ runner.os }}-sourcecred_data
+    - name: Cache Static Files
+      id: cache-static
+      uses: actions/cache@v1
+      with:
+        path: docs
+        key: ${{ runner.os }}-sourcred_docs
     - name: Generate SourceCred Prototype
       env:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        mkdir -p sourcecred_data ${PWD}/docs/api/v1/;
+        mkdir -p sourcecred_data docs;
         SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i --rm -v $PWD/sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred:dev load ${GITHUB_REPOSITORY}
         docker run -i --rm -v $PWD/sourcecred_data:/data -v $PWD/docs:/output sourcecred/sourcecred:dev build --output-path /output
-        cp -r sourcecred_data/ ${PWD}/docs/api/v1/data
-        rm -rf ${PWD}/docs/api/v1/data/cache
-        echo "Content of docs:"
-        ls docs/
+        mkdir -p docs/api/v1/
+        cp -r sourcecred_data/ docs/api/v1/data
+        rm -rf docs/api/v1/data/cache
     - name: Open Pull Request
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
