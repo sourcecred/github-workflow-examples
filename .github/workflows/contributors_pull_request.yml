@@ -44,7 +44,7 @@ jobs:
 
         git add contributors.svg
         git commit -m "Automated deployment to update contributors.svg $(date '+%Y-%m-%d')"
-        git push origin "${BRANCH_FROM}"
+        git push origin "${BRANCH_FROM}" || exit 0
 
         # Absolutely must download specific sha of script
         wget https://raw.githubusercontent.com/sourcecred/sourcecred-action/9e1f0644a2398f8c99b8b19fd685566fce207959/.github/workflows/pull_request.sh
