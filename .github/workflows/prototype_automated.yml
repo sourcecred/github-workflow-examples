@@ -48,7 +48,7 @@ jobs:
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@users.noreply.github.com"
 
-        git pull origin ${UPDATE_BRANCH}
+        git pull origin ${UPDATE_BRANCH} || echo "Branch not yet on remote"
         git add docs/*
         git commit -m "Automated deployment to update prototype in docs $(date '+%Y-%m-%d')"
         git push origin ${UPDATE_BRANCH}

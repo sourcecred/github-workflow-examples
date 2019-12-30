@@ -40,7 +40,7 @@ jobs:
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@users.noreply.github.com"
 
-        git pull origin ${UPDATE_BRANCH}
+        git pull origin ${UPDATE_BRANCH} || echo "Branch not yet on remote"
         git add contributors.svg
         git commit -m "Automated deployment to update contributors.svg $(date '+%Y-%m-%d')" || exit 0
         git push origin ${UPDATE_BRANCH}
