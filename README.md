@@ -8,6 +8,7 @@ contributions to your repository. You can choose to either generate a contributo
 
  - [Generate a Contributors Graphic](#generate-a-contributors-graphic)
  - [Generate a Sourcecred Prototype](#generate-a-sourcecred-prototype)
+ - [See Examples in the Wild](#see-examples-in-the-wild)
 
 ## Generate a Contributor's Graphic
 
@@ -86,3 +87,13 @@ You might want to customize the workflow in the following ways:
 #### prototype_automated.yml
 
  - **branch** You can customize the branch that is pushed to by changing `UPDATE_BRANCH`. Currently we push to "master" but you might imagine wanting to push the entire static content to gh-pages (or somewhere else).
+
+## See Examples in the Wild
+
+The following repositories are deploying these pipelines to generate graphics:
+
+ - [singularityhub/sregistry](https://github.com/singularityhub/sregistry): runs once a month to generate a contributor's graphic for the readme
+ - [usrse/usrse.github.io](https://github.com/usrse/usrse.github.io): runs once a week to generate a contributor's graphic for the readme
+
+
+Have you used a workflow here and want to add your repository to show? [Please open an issue!](https://github.com/sourcecred/sourcecred-action/issues)
