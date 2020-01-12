@@ -2,8 +2,10 @@ name: prototype-automated
 
 on:
   schedule:
+    # Once a month on the first
+    - cron: 0 0 1 * *
     # Nightly at 2:30am 
-    - cron: 30 2 * * *
+    # 30 2 * * *
 
 jobs:
   GenerateSourcecred:
