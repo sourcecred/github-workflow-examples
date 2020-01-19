@@ -49,8 +49,10 @@ create_pull_request() {
     TARGET="${2}"  # pull request TO this target
 
     # Check if the branch already has a pull request open
-    TITLE='Updating Sourcecred Graphic'
-    BODY='This is a pull request to update the sourcecred graphic.'
+    if [[ -z "${TITLE}" ]]; then
+        TITLE='Updating Sourcecred Graphic'
+    fi
+    BODY='This is a pull request to update sourcecred static files.'
     DATA="{\"base\":\"${TARGET}\", \"head\":\"${SOURCE}\", \"body\":\"${BODY}\"}"
     RESPONSE=$(curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" --user "${GITHUB_ACTOR}" -X GET --data "${DATA}" ${PULLS_URL})
     PR=$(echo "${RESPONSE}" | jq --raw-output '.[] | .head.ref')

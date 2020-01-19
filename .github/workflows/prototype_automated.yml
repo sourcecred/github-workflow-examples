@@ -1,0 +1,56 @@
+name: prototype-automated
+
+on:
+  schedule:
+    # Once a month on the first
+    - cron: 0 0 1 * *
+    # Nightly at 2:30am 
+    # 30 2 * * *
+
+jobs:
+  GenerateSourcecred:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v1
+    - name: Cache Data
+      id: cache-data
+      uses: actions/cache@v1
+      with:
+        path: sourcecred_data
+        key: ${{ runner.os }}-sourcecred_data
+    - name: Cache Static Files
+      id: cache-static
+      uses: actions/cache@v1
+      with:
+        path: docs
+        key: ${{ runner.os }}-sourcred_docs
+    - name: Generate SourceCred Prototype
+      env:
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        mkdir -p sourcecred_data docs;
+        SOURCECRED_GITHUB_TOKEN=${TOKEN} docker run -i --rm -v $PWD/sourcecred_data:/data -e SOURCECRED_GITHUB_TOKEN sourcecred/sourcecred:dev load ${GITHUB_REPOSITORY}
+        docker run -i --rm -v $PWD/sourcecred_data:/data -v $PWD/docs:/output sourcecred/sourcecred:dev build --output-path /output
+        mkdir -p docs/api/v1/
+        cp -r sourcecred_data/ docs/api/v1/data
+        rm -rf docs/api/v1/data/cache
+    - name: Update Master Branch
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        UPDATE_BRANCH: master
+      run: |
+        echo "GitHub Actor: ${GITHUB_ACTOR}"
+        git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        git branch
+        echo "Branch to push to is ${UPDATE_BRANCH}"
+        git checkout -b ${UPDATE_BRANCH}
+        git branch
+
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@users.noreply.github.com"
+
+        git pull origin ${UPDATE_BRANCH} || echo "Branch not yet on remote"
+        git add docs/*
+        git commit -m "Automated deployment to update prototype in docs $(date '+%Y-%m-%d')"
+        git push origin ${UPDATE_BRANCH}
