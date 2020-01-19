@@ -2,8 +2,11 @@ name: prototype-pull-request
 
 on:
   schedule:
+    # Once a year, the 2nd of January
+    - cron: 0 0 2 1 *
     # Weekly on Sunday
-    - cron: 0 0 * * 0
+    # 0 0 * * 0
+
 
 jobs:
   GenerateSourcecred:
