@@ -45,7 +45,22 @@ You might want to customize the workflow in the following ways:
 
  - **branch** You can customize the branch that is pushed to by changing `UPDATE_BRANCH`. Currently we push to "contributors-automated" but you might imagine wanting to push an updated graphic to some web interface to display it.
 
-### 3. README
+## 3. Cache
+
+Currently, we cache the "sourcecred_data" folder is the root of the repository that contains
+previously extracted metadata about contributions. For most cases, this will assist to run
+the action more quickly, however if you find that a different version of `sourcecred/sourcecred:dev`
+is being used (and either outputs an error, or your contribution plot seems off) you can manually
+invalidate the cache by removing this folder entirely before running the containers:
+
+```bash
+rm -rf sourcecred_data
+mkdir -p sourcecred_data
+```
+
+The updated data will then be saved again to the cache.
+
+### 4. README
 
 Likely after the first graphic generation, you will want to add a link for it
 to render in your README.md, as is done here.
