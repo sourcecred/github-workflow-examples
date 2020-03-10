@@ -40,17 +40,23 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         UPDATE_BRANCH: master
       run: |
-        echo "GitHub Actor: ${GITHUB_ACTOR}"
+        printf "GitHub Actor: ${GITHUB_ACTOR}\n"
         git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         git branch
-        echo "Branch to push to is ${UPDATE_BRANCH}"
-        git checkout -b ${UPDATE_BRANCH}
+        printf "Branch to push to is ${UPDATE_BRANCH}\n"
+        git checkout -b ${UPDATE_BRANCH} || git checkout ${UPDATE_BRANCH}
         git branch
 
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@users.noreply.github.com"
 
-        git pull origin ${UPDATE_BRANCH} || echo "Branch not yet on remote"
+        git pull origin ${UPDATE_BRANCH} || printf "Branch not yet on remote\n"
         git add docs/*
-        git commit -m "Automated deployment to update prototype in docs $(date '+%Y-%m-%d')"
-        git push origin ${UPDATE_BRANCH}
+
+        if git diff-index --quiet HEAD --; then
+           printf "No changes\n"
+        else
+           printf "Changes\n"
+           git commit -m "Automated deployment to update prototype in docs $(date '+%Y-%m-%d')"
+           git push origin ${UPDATE_BRANCH}
+        fi
