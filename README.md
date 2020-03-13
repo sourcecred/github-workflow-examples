@@ -1,9 +1,9 @@
-# Sourcecred Action
+# Sourcecred Example Workflows
 
-[![GitHub actions status](https://github.com/sourcecred/sourcecred-action/workflows/contributors-pull-request/badge.svg?branch=master)](https://github.com/sourcecred/sourcecred-action/actions?query=branch%3Amaster+workflow%3Acontributors-pull-request)
+[![GitHub actions status](https://github.com/sourcecred/github-workflow-examples/workflows/contributors-pull-request/badge.svg?branch=master)](https://github.com/sourcecred/github-workflow-examples/actions?query=branch%3Amaster+workflow%3Acontributors-pull-request)
 
-This is a repository with example GitHub actions for generating [sourcecred](https://www.github.com/sourcecred/sourcecred) 
-graphics and prototypes. Specifically, we use the sourcecred [development](https://hub.docker.com/r/sourcecred/sourcecred) and [widgets](https://www.github.com/sourcecred/widgets) containers to generate either a single graphic, or an entire [web interface](https://sourcecred.io/sourcecred-action/timeline/sourcecred/sourcecred-action/) to show
+This is a repository with example GitHub workflows for generating [sourcecred](https://www.github.com/sourcecred/sourcecred) 
+graphics and prototypes. Specifically, we use the sourcecred [development](https://hub.docker.com/r/sourcecred/sourcecred) and [widgets](https://www.github.com/sourcecred/widgets) containers to generate either a single graphic, or an entire [web interface](https://sourcecred.io/github-workflow-examples/timeline/sourcecred/github-workflow-examples/) to show
 contributions to your repository. You can choose to either generate a contributors graphic, or a prototype.
 
  - [Generate a Contributors Graphic](#generate-a-contributors-graphic)
@@ -75,7 +75,7 @@ Happy hacking!
 ## Generate a SourceCred Prototype
 
 A more substantial tool is the [sourcecred prototype](https://sourcecred.io/cred/timeline/@sourcecred/),
-which includes an interactive graph for your repository. The repository here deploys an [example](https://sourcecred.io/sourcecred-action/timeline/sourcecred/sourcecred-action/) web interface on its GitHub pages.
+which includes an interactive graph for your repository. The repository here deploys an [example](https://sourcecred.io/github-workflow-examples/timeline/sourcecred/github-workflow-examples/) web interface on its GitHub pages.
 
 ### 1. Choose your workflow
 
@@ -111,4 +111,4 @@ The following repositories are deploying these pipelines to generate graphics:
  - [usrse/usrse.github.io](https://github.com/usrse/usrse.github.io): runs once a week to generate a contributor's graphic for the readme
 
 
-Have you used a workflow here and want to add your repository to show? [Please open an issue!](https://github.com/sourcecred/sourcecred-action/issues)
+Have you used a workflow here and want to add your repository to show? [Please open an issue!](https://github.com/sourcecred/github-workflow-examples/issues)
