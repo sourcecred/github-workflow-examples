@@ -34,13 +34,13 @@ jobs:
         git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         git branch
         printf "Branch to push to is ${UPDATE_BRANCH}\n"
-        git checkout -b ${UPDATE_BRANCH} || git checkout ${UPDATE_BRANCH}
+        git checkout -b "${UPDATE_BRANCH}"
         git branch
 
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@users.noreply.github.com"
 
-        git pull origin ${UPDATE_BRANCH} || printf "Branch not yet on remote\n"
+        git pull origin ${UPDATE_BRANCH} || echo "Branch not yet on remote"
         git add contributors.svg
 
         if git diff-index --quiet HEAD --; then
